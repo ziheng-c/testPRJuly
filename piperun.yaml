@@ -1,0 +1,12 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  name: output-pipeline-run
+spec:
+  pipelineRef:
+    name: output-pipeline
+  serviceAccount: 'default'
+  resources:
+  - name: source-repo
+    resourceRef:
+      name: skaffold-git
