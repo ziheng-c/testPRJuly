@@ -1,0 +1,16 @@
+# Reads a file from a predefined path in the workspace git PipelineResource
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: check-stuff-file-exists
+spec:
+  inputs:
+    resources:
+    - name: workspace
+      type: git
+      targetPath: newworkspace
+  steps:
+  - name: read
+    image: ubuntu
+    command: ["/bin/bash"]
+    args: ['-c', 'cat /workspace/newworkspace/stuff'] # tests that new targetpath and previous task output is dumped
