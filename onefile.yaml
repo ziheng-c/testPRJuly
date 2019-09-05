@@ -86,6 +86,46 @@ spec:
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineRun
 metadata:
+  name: output-pipeline-run-ssq
+spec:
+  pipelineRef:
+    name: output-pipeline
+  serviceAccount: 'default'
+  resources:
+  - name: source-repo
+    resourceRef:
+      name: skaffold-git
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
+  name: output-pipeline-run-bog
+spec:
+  pipelineRef:
+    name: output-pipeline
+  serviceAccount: 'default'
+  resources:
+  - name: source-repo
+    resourceRef:
+      name: skaffold-git
+---
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: pull-private-image-run
+spec:
+  serviceAccount: test-build-robot
+  taskSpec:
+    steps:
+    - name: pull
+      # Private image is just Ubuntu
+      image: quay.io/rhpipeline/skopeo:alpine
+      command: ["skopeo"]
+      args: ["copy", "docker://gcr.io/build-crd-testing/secret-sauce", "dir:///tmp/"]
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineRun
+metadata:
   name: output-pipeline-run
 spec:
   pipelineRef:
