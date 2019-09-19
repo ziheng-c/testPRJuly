@@ -115,7 +115,7 @@ spec:
         - name: message
           value: $(params.message)
         resources:
-        - name: git-source
+        - name: source-repo
           resourceRef:
             name: git-source-$(uid)
 ---
