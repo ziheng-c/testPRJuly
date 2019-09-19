@@ -131,11 +131,21 @@ spec:
       value: $(event.repository.url)
 ---
 apiVersion: tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: manual-pipeline-binding
+spec:
+  params:
+    - name: gitrevision
+      value: v0.32.0
+    - name: gitrepositoryurl
+      value: https://github.com/GoogleContainerTools/skaffold
+---
+apiVersion: tekton.dev/v1alpha1
 kind: EventListener
 metadata:
   name: listener
 spec:
-  serviceAccountName: tekton-triggers-example-sa
   triggers:
     - binding:
         name: pipeline-binding
@@ -143,4 +153,18 @@ spec:
         name: pipeline-template
       params:
         - name: message
-          value: Hello from the Triggers EventListener!
+          value: Hello from the Git Triggers EventListener!
+---
+apiVersion: tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: manual-listener
+spec:
+  triggers:
+    - binding:
+        name: manual-pipeline-binding
+      template:
+        name: pipeline-template
+      params:
+        - name: message
+          value: Hello from the Manual Triggers EventListener!
