@@ -100,6 +100,22 @@ spec:
           value: $(params.gitrevision)
         - name: url
           value: $(params.gitrepositoryurl)
+    - apiVersion: v1
+      kind: Secret
+      metadata:
+        name: github-token
+        annotations:
+          tekton.dev/git-0: https://github.com # Described below
+      type: kubernetes.io/basic-auth
+      stringData:
+        username: $(params.username)
+        password: $(secret.pwd)
+    - apiVersion: v1
+      kind: ServiceAccount
+      metadata:
+        name: github-build
+      secrets:
+        - name: github-token
     - apiVersion: tekton.dev/v1alpha1
       kind: PipelineRun
       metadata:
@@ -110,7 +126,7 @@ spec:
       spec:
         pipelineRef:
             name: output-pipeline
-        serviceAccount: 'default'
+        serviceAccount: github-build
         params:
         - name: message
           value: $(params.message)
@@ -139,7 +155,7 @@ spec:
     - name: gitrevision
       value: v0.32.0
     - name: gitrepositoryurl
-      value: https://github.com/GoogleContainerTools/skaffold
+      value: https://github.com/bogg/privateskaffold.git
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: EventListener
@@ -168,3 +184,5 @@ spec:
       params:
         - name: message
           value: Hello from the Manual Triggers EventListener!
+        - name: username
+          value: bogg
