@@ -109,7 +109,7 @@ spec:
       type: kubernetes.io/basic-auth
       stringData:
         username: $(params.username)
-        password: $(secret.pwd)
+        password: $(params.githubtoken)
     - apiVersion: v1
       kind: ServiceAccount
       metadata:
