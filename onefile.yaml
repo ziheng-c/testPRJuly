@@ -170,6 +170,9 @@ spec:
       params:
         - name: message
           value: Hello from the Git Triggers EventListener!
+        - name: username
+          value: bogg
+
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: EventListener
