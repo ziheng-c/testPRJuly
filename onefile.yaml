@@ -126,7 +126,7 @@ metadata:
 spec:
   params:
     - name: gitrevision
-      value: $(event.head_commit.id)
+      value: $(event)
     - name: gitrepositoryurl
       value: $(event.repository.url)
 ---
